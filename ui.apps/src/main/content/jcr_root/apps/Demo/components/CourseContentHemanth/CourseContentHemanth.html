@@ -1,0 +1,125 @@
+<script>
+    function sendData(itemIndex) {
+        const param1 = $("#param1").val();
+        const param2 = $("#param2").val();
+        const param3 = $("#param3").val();
+        const param4 = $("#param4").val();
+        const componentPath = $(".your-component").attr("data-path");
+
+        console.log("Component Path:", componentPath);
+
+        $.ajax({
+            url: '/bin/myServlet',
+            type: 'POST',
+            data: {
+                param1: param1,
+                param2: param2,
+                param3: param3,
+                param4: param4,
+                componentPath: componentPath,
+                itemIndex: itemIndex // Pass itemIndex for edit
+            },
+            success: function(response) {
+                console.log('Response from POST:', response);
+                alert('Response: ' + response.message);
+                fetchTableData();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
+            }
+        });
+    }
+
+    function fetchTableData() {
+        const componentPath = $(".your-component").attr("data-path");
+
+        console.log("Fetching data from path:", componentPath);
+
+        $.ajax({
+            url: '/bin/myServlet',
+            type: 'GET',
+            data: { path: componentPath },
+            success: function(response) {
+                console.log('Response from GET:', response);
+                if (response.data) {
+                    console.log('Data received:', response.data);
+                    
+                    // Create table element
+                    const table = document.createElement('table');
+
+                    // Create table header
+                    const thead = document.createElement('thead');
+                    const headerRow = document.createElement('tr');
+                    const headers = ['Name', 'Email', 'Subject', 'Message', 'Edit', 'Delete'];
+                    headers.forEach(headerText => {
+                        const th = document.createElement('th');
+                        th.textContent = headerText;
+                        headerRow.appendChild(th);
+                    });
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+
+                    // Create table body
+                    const tbody = document.createElement('tbody');
+                    response.data.forEach((item, index) => {
+                        const row = document.createElement('tr');
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = item.name || '';
+                        row.appendChild(nameCell);
+
+                        const emailCell = document.createElement('td');
+                        emailCell.textContent = item.email || '';
+                        row.appendChild(emailCell);
+
+                        const subjectCell = document.createElement('td');
+                        subjectCell.textContent = item.subject || '';
+                        row.appendChild(subjectCell);
+
+                        const messageCell = document.createElement('td');
+                        messageCell.textContent = item.message || '';
+                        row.appendChild(messageCell);
+
+                        const editCell = document.createElement('td');
+                        editCell.textContent = 'Edit';
+                        editCell.classList.add('edit');
+                        editCell.setAttribute('data-index', index);
+                        editCell.addEventListener('click', function() {
+                            // Populate form with row data
+                            $("#param1").val(item.name);
+                            $("#param2").val(item.email);
+                            $("#param3").val(item.subject);
+                            $("#param4").val(item.message);
+                            // Call sendData with itemIndex
+                            sendData(index);
+                        });
+                        row.appendChild(editCell);
+
+                        const deleteCell = document.createElement('td');
+                        deleteCell.textContent = 'Delete';
+                        deleteCell.classList.add('delete');
+                        deleteCell.setAttribute('data-index', index);
+                        row.appendChild(deleteCell);
+
+                        tbody.appendChild(row);
+                    });
+                    table.appendChild(tbody);
+
+                    // Append table to the div
+                    const formDataTable = document.getElementById('formDataTable');
+                    formDataTable.innerHTML = ''; // Clear previous content
+                    formDataTable.appendChild(table);
+                } else {
+                    console.error('No data received');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        fetchTableData();
+    });
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("loginForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/bin/login", true); // This should match the URL pattern in your Sling servlet configuration
+            xhr.setRequestHeader(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+
+            xhr.onreadystatechange = function () {
+              if (
+                xhr.readyState === XMLHttpRequest.DONE &&
+                xhr.status === 200
+              ) {
+                // Handle successful response here
+                alert("Login successful!");
+              } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                // Handle errors here
+                alert("Login failed!");
+              }
+            };
+
+            xhr.send(
+              "email=" +
+                encodeURIComponent(email) +
+                "&password=" +
+                encodeURIComponent(password)
+            );
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <form id="loginForm">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="E-mail"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+  </body>
+</html>

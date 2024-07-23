@@ -1,0 +1,27 @@
+<div data-sly-use.obj="com.adobe.aem.guides.demo.core.models.Finaltogetproperties">
+
+<h2>Firstname :${obj.username}</h2>
+
+
+
+<div data-sly-test="${properties.username}">
+<h2>Password :${obj.password}</h2>
+</div>
+
+
+<div data-sly-include="sample.html"></div>
+<div data-sly-resource="${'button1' @resourceType='Demo/components/button'}"></div>
+
+
+
+
+*********MultiField*************
+<div data-sly-list.item = "${obj.multifield}">
+
+<h3>Address : ${item.address}</h3>
+<h3>CurentAddress : ${item.currentaddress}</h3>
+<h3>Pincode : ${item.pincode}</h3>
+
+</div>
+
+</div>

@@ -1,0 +1,10 @@
+<div data-sly-use.obj="com.adobe.aem.guides.demo.core.models.header">
+<h1>Path :${obj.path} </h1>
+<h1>lastname :${obj.lastname} </h1>
+<h1>Student :${obj.checkbox} </h1>
+<h1>-------------Multifield---------</h1>
+<div data-sly-list.item="${obj.multifield}">
+<h2>hobbies : ${item.hobbies}</h2>
+<h2>JoiningDate : ${item.jd}</h2>
+</div>
+</div>

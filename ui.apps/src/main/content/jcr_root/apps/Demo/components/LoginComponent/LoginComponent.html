@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('/content/dam/capstone/lo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .img-container, .form-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideDown 1s ease-in-out;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideUp 1s ease-in-out;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .form-container .--btn-primary {
+            background-color: #007bff;
+        }
+
+        .form-container .--btn-danger {
+            background-color: #dc3545;
+        }
+
+        .form-container .links {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-container .register {
+            text-align: center;
+        }
+
+        .card {
+            border: 1px solid transparent;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.581);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="img-container">
+            <img src="/content/dam/capstone/login.png" alt="Login">
+        </div>
+        <div class="form-container card">
+            <h1 style="color: #FF4500; text-align: center;">Login</h1>
+            <form action="reset.html">
+                <input type="text" id="email" name="email" placeholder="E-mail" />
+                <input type="password" id="password" name="password" placeholder="Password" />
+                <input type="submit" id="login" name="login" value="Login" />
+                <div class="links">
+                    <a href="/content/Demo/us/en/auth/reset.html">Reset Password</a>
+                </div>
+            </form>
+            <button class="--btn --btn-danger" onclick="loginWithGoogle()">
+                <i class="fab fa-google"></i> Login With Google
+            </button>
+            <div class="register">
+                <p>Don't have an account?</p>
+                <a href="/content/Demo/us/en/auth/register.html">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getFirestore,
+            setDoc,
+            doc,
+            updateDoc,
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg02PT49eiR6tmb54IXvWjkn36baHnWIg",
+            authDomain: "login-8d31f.firebaseapp.com",
+            projectId: "login-8d31f",
+            storageBucket: "login-8d31f.appspot.com",
+            messagingSenderId: "110910711293",
+            appId: "1:110910711293:web:1ec385d71663e353446594",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth();
+
+        document.getElementById("login").addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const date = new Date();
+                    const user = userCredential.user;
+                    return updateDoc(doc(db, "users", user.uid), {
+                        last_login: date,
+                    });
+                })
+                .then(() => {
+                    alert("User logged in and data is updated in Firestore");
+                    window.location.href = "/content/Demo/us/en/cap/home.html"; // Redirect to home page
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(errorMessage);
+                });
+        });
+
+        function loginWithGoogle() {
+            // Implement Google login functionality here
+        }
+    </script>
+</body>
+</html>

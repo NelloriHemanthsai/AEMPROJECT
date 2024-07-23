@@ -1,0 +1,17 @@
+<div data-sly-use.obj="com.adobe.aem.guides.demo.core.models.NewComponent">
+<p>Path:${obj.firstname}</p>
+<p>Lastname : ${obj.lastname}</p>
+<p>checkBox : ${obj.checkbox}</p>
+
+<h1>------------Multifield------------</h1>
+<div data-sly-list.item="${obj.aboutMySelf}">
+<p>hobbies:${item.hobbies}</p>
+
+<p>JoiningDate : ${item.joiningdate}</p>
+</div>
+
+<div data-sly-list.nis="${item.nested}">
+<p>Surname:${nis.surname}</p>
+
+</div>
+</div>

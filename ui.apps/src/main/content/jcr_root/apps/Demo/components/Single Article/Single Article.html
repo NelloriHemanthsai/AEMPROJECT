@@ -1,0 +1,9 @@
+<h1>Hello Article</h1>
+
+<div> Enable PII: ${properties.enablePII ? 'checked' : 'unchecked'} </div>
+
+<div data-sly-test.cssClass="${properties.enablePII}">
+    <p data-sly-test="${cssClass}">Css Class : ${properties.cssClass}</p>
+
+    </div>
+

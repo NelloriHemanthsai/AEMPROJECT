@@ -1,0 +1,51 @@
+<div data-sly-use.side="com.adobe.aem.guides.demo.core.models.Sidebarproperties">
+<h1>First tab Header</h1>
+
+<div> <b>logomobileimage:</b> <img src="${side.logomobileimage }" alt="Tab 1 logo image"></div>
+ <div><b>logolink :</b><a href="${side.logolink }">${side.logolink } </a></div>
+  <div><b>logopath :</b> ${side.logopath }</div>
+ <div><b> enableswitch: </b>${side.enableswitch}</div>
+ 
+ 
+ <h2>Second Tab HeaderLinks</h2>
+ 
+  <div data-sly-list.secondtab="${side.details}">
+  
+  
+  
+  <div><b> Name:</b><h3>${secondtab.name}</h3></div>
+  
+  <div><b> Image:</b><img src="${secondtab.image}"  alt="Tab 2 logo image"></div>
+  
+  </div>
+
+<h3>  Third Tab NestedMultiField</h3>
+
+ <div data-sly-list.thirdtab="${side.mani}">
+ 
+ <div>
+ <h2>DeskTop icon : </h2><a href="${thirdtab.desk}"> ${thirdtab.desk }</a>
+ </div>
+ 
+ <div>
+  <h2>Mobile icon : </h2><a href="${thirdtab.mob}">${thirdtab.mob}</a>
+  </div>
+  
+  <div data-sly-list.nestedtab="${thirdtab.navi}">
+      <div>
+        <h2>Navigation Url : </h2><a href="${nestedtab.navisurl}">${nestedtab.navisurl}</a>
+       </div>
+ </div>
+
+ </div>
+ 
+ 
+ <h3><b>  <u>Region</u> :- </b></h3>
+ <div><b> country:</b> ${side.country }</div>
+ 
+
+
+
+
+
+</div>

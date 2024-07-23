@@ -1,0 +1,17 @@
+<div data-sly-use.obj="com.adobe.aem.guides.demo.core.models.Togetproperties">
+
+<p>First Name:${obj.firstname}</p>
+<p>Last Name :${obj.lastname}</p>
+<p>surname :${obj.surnames}</p>
+<p>Get Page Path :${obj.pagePath}</p>
+<p>Sling ResourceType:${obj.slingresourceType}</p>
+<p>Jcr Create By:${obj.jcrcreated}</p>
+<p>phonenub :${obj.phonenumber}</p>
+*******Multifield********/
+<div data-sly-list.item="${obj.multifield}">
+<p>hobbies:${item.hobbies1}</p>
+<p>currentaddress:${item.currentaddress}</p>
+<p>correspondingaddress:${item.correspondingaddress}</p>
+<p>pincode:${item.pincode}</p>
+</div>
+</div>

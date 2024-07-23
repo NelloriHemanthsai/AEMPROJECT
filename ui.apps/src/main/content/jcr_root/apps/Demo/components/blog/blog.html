@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posts</title>
+<style>
+/* Basic styling for the post */
+.post {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Ensure content does not overflow */
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post-header {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.post-title {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.post-date {
+    font-style: italic;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.edit-button,
+.delete-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.edit-button:hover {
+    background-color: #218838;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+.post-content {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.post-image {
+    max-width: 100%; /* Ensure image does not exceed post width */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove any inline-block spacing */
+    margin-top: 10px; /* Adjust spacing as needed */
+    border-radius: 5px; /* Rounded corners for image */
+    animation: fadeInZoomIn 1.5s ease-in-out;
+}
+
+@keyframes fadeInZoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.75);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Form styling */
+form {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+form input[type="text"],
+form textarea {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    form input[type="text"],
+    form textarea {
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Existing post template -->
+    <div class="post">
+        <div class="post-header">
+            <h2 class="post-title">Sample Post Title</h2>
+            <p class="post-date">July 1, 2024</p>
+        </div>
+        <div class="post-content">
+            <p>This is a sample post content. You can write anything you want to appear in the post here.</p>
+            <p>You can add more paragraphs, images, or any other HTML elements as needed.</p>
+        </div>
+    </div>
+
+<div class="form-container">
+    <!-- Form to add new post -->
+    <form id="new-post-form">
+        <label for="post-title">Post Title:</label>
+        <input type="text" id="post-title" name="post-title" required>
+        <label for="post-content">Post Content:</label>
+        <textarea id="post-content" name="post-content" rows="4" required></textarea>
+        <label for="post-image">Choose Image:</label>
+        <input type="file" id="post-image" name="post-image" accept="image/*">
+        <button type="submit">Add New Post</button>
+    </form>
+</div>
+    <!-- Container for dynamically added posts -->
+    <div id="posts-container"></div>
+</div>
+
+
+</body>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('new-post-form');
+    const postsContainer = document.getElementById('posts-container');
+
+    // Function to retrieve posts from localStorage
+    function getPostsFromStorage() {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        return posts;
+    }
+
+    // Function to save posts to localStorage
+    function savePostsToStorage(posts) {
+        localStorage.setItem('posts', JSON.stringify(posts));
+    }
+
+    // Function to render posts on the page
+    function renderPosts() {
+        const posts = getPostsFromStorage();
+        posts.forEach((post, index) => {
+            const postElement = createPostElement(post.title, post.content, post.image, index);
+            postsContainer.appendChild(postElement);
+        });
+    }
+
+    // Function to create a new post element
+    function createPostElement(title, content, image, index) {
+        const post = document.createElement('div');
+        post.classList.add('post', 'new-post');
+
+        const postHeader = document.createElement('div');
+        postHeader.classList.add('post-header');
+
+        const postTitle = document.createElement('h2');
+        postTitle.classList.add('post-title');
+        postTitle.textContent = title;
+
+        const postDate = document.createElement('p');
+        postDate.classList.add('post-date');
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        postDate.textContent = currentDate;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('delete-button');
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.classList.add('edit-button');
+
+        // Event listener to delete post
+        deleteButton.addEventListener('click', function() {
+            // Remove post from DOM
+            post.remove();
+
+            // Remove post from localStorage
+            const posts = getPostsFromStorage();
+            posts.splice(index, 1); // Remove 1 item at index
+            savePostsToStorage(posts);
+        });
+
+        // Event listener to edit post
+        editButton.addEventListener('click', function() {
+            // Fill form fields with post content for editing
+            document.getElementById('post-title').value = title;
+            document.getElementById('post-content').value = content;
+            form.dataset.editIndex = index; // Store index in form's dataset
+
+            // Scroll to the form
+            form.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        const postContent = document.createElement('div');
+        postContent.classList.add('post-content');
+        const contentParagraph = document.createElement('p');
+        contentParagraph.textContent = content;
+        postContent.appendChild(contentParagraph);
+
+        // Append elements to post
+        postHeader.appendChild(postTitle);
+        postHeader.appendChild(postDate);
+        postHeader.appendChild(editButton);
+        postHeader.appendChild(deleteButton);
+        post.appendChild(postHeader);
+        post.appendChild(postContent);
+
+        // Add image if provided
+        if (image) {
+            const img = document.createElement('img');
+            img.src = image;
+            img.alt = 'Post Image';
+            img.classList.add('post-image');
+            post.appendChild(img);
+        }
+
+        return post;
+    }
+
+    // Render existing posts on page load
+    renderPosts();
+
+    // Event listener for form submission
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get input values
+        const title = document.getElementById('post-title').value;
+        const content = document.getElementById('post-content').value;
+        let image = '';
+
+        // Check if an image file was selected
+        const imageInput = document.getElementById('post-image');
+        if (imageInput.files.length > 0) {
+            const selectedImage = imageInput.files[0];
+            image = URL.createObjectURL(selectedImage);
+        }
+
+        // Check if we are editing an existing post
+        if (form.dataset.editIndex) {
+            const editIndex = form.dataset.editIndex;
+            const posts = getPostsFromStorage();
+
+            // Update the post
+            posts[editIndex] = {
+                title: title,
+                content: content,
+                image: image || posts[editIndex].image // Use new image if selected, otherwise keep old image
+            };
+
+            // Save updated posts array to localStorage
+            savePostsToStorage(posts);
+
+            // Clear the container and re-render posts
+            postsContainer.innerHTML = '';
+            renderPosts();
+
+            // Clear edit index from form's dataset
+            delete form.dataset.editIndex;
+
+        } else {
+            // Create new post object
+            const newPost = {
+                title: title,
+                content: content,
+                image: image
+            };
+
+            // Retrieve existing posts from localStorage
+            const posts = getPostsFromStorage();
+
+            // Add new post to the array
+            posts.push(newPost);
+
+            // Save updated posts array to localStorage
+            savePostsToStorage(posts);
+
+            // Create new post element and append to posts container
+            const postElement = createPostElement(title, content, image, posts.length - 1); // Index of the last added post
+            postsContainer.appendChild(postElement);
+
+            // Remove new-post class after animation completes
+            setTimeout(() => {
+                postElement.classList.remove('new-post');
+            }, 500); // Adjust to match the animation duration
+        }
+
+        // Reset form fields
+        form.reset();
+    });
+});
+
+
+</script>
+
+</html>

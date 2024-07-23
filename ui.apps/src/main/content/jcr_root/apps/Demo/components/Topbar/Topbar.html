@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+      }
+
+      .top-bar {
+        background: #333;
+        color: white;
+        padding: 10px 0;
+        width: 100%;
+      }
+
+      .tb-contact p,
+      .tb-menu a {
+        color: white;
+        margin: 0;
+        padding: 0 10px;
+        display: inline-block;
+      }
+
+      h1 {
+        font-size: 24px;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .col-md-6 {
+        flex: 1;
+      }
+
+      .tb-contact {
+        text-align: left;
+      }
+
+      .tb-menu {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-bar">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="tb-contact">
+              <p><i class="fas fa-envelope"></i>${properties.email}</p>
+              <p><i class="fas fa-phone-alt"></i>${properties.phone}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="tb-menu" data-sly-list.nav="${properties.rightNav}">
+              <sly data-sly-use.contentResource="${nav}/jcr:content"></sly>
+              <a href="${nav}.html">${contentResource.jcr:title}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="container"
+      style="
+        text-align: center;
+        background: white;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      "
+    >
+      <h1>Welcome, <span id="userEmail"></span>!</h1>
+    </div>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAg02PT49eiR6tmb54IXvWjkn36baHnWIg",
+        authDomain: "login-8d31f.firebaseapp.com",
+        projectId: "login-8d31f",
+        storageBucket: "login-8d31f.appspot.com",
+        messagingSenderId: "110910711293",
+        appId: "1:110910711293:web:1ec385d71663e353446594",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+
+      // Get the currently signed-in user
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in
+          const email = user.email;
+          const username = email.substring(0, email.indexOf("@"));
+          document.getElementById("userEmail").innerText = username;
+        }
+      });
+    </script>
+  </body>
+</html>

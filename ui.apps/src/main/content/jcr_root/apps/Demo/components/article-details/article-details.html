@@ -1,0 +1,4 @@
+<sly data-sly-use.obj="com.adobe.aem.guides.demo.core.models.ArticleDetailModel" />
+<h1>${obj.articleTitle}</h1>
+    <div>${obj.articleDesc @context='html'}</div>
+    <img src="${articleImage}" />

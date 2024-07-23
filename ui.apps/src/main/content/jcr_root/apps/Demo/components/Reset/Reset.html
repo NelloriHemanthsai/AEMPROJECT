@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+         background-image: url('/content/dam/capstone/Registernatureback.jpg'); 
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .container {
+            display: flex;
+            width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .img-container, .form-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideDown 1s ease-in-out;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideUp 1s ease-in-out;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .form-container .--btn-primary {
+            background-color: #007bff;
+        }
+
+        .form-container .--btn-danger {
+            background-color: #dc3545;
+        }
+
+        .form-container .links {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-container .register {
+            text-align: center;
+        }
+
+        .card {
+            border: 1px solid transparent;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.581);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="form-container card">
+          		<h1 style=" color: #FF4500; text-align: center;" >Reset</h1>
+            <form action="reset.html">
+                <input type="text" placeholder="Email" required>
+
+                <button class="--btn --btn-primary" type="submit">Reset</button>
+
+                 <div class="links">
+                <p>
+                  <a href="/content/Demo/us/en/auth/login.html">Login</a>
+                </p>
+                <p>
+                   <a href="/content/Demo/us/en/auth/register.html">Register</a>
+                </p>
+              </div>
+
+            </form>
+
+
+        </div>
+         <div class="img-container">
+            <img src="/content/dam/capstone/forgot.png" alt="forgot">
+        </div>
+    </div>
+</body>
+</html>

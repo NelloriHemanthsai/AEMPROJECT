@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEM Topics</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your external CSS file -->
+    <style>
+        /* Basic styling for layout */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        @keyframes fadeInZoomIn {
+            0%, 100% { opacity: 0; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+            gap: 20px; /* Gap between grid items */
+        }
+
+        .topic {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeInZoomIn 8s  ease-in-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .topic:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .topic h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #007bff; /* Blue color for the title */
+            padding: 20px;
+            transition: color 0.3s;
+        }
+
+        .topic:hover h2 {
+            color: #0056b3; /* Darker blue on hover */
+        }
+
+        .topic img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px 5px 0 0; /* Rounded corners on top of image */
+        }
+
+        .topic p {
+            margin: 20px;
+            color: #666;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+   	<h1>${properties.maintitle}</h1>
+    <div class="grid-container">
+       <sly data-sly-use.obj="com.adobe.aem.guides.demo.core.models.Course">
+            <sly data-sly-list="${obj.multifield}">
+                <div class="topic">
+                 <h2>${item.title}</h2>
+                    <img src="${item.image @ context='uri'}" alt="${item.alttext @ context='text'}">
+                    <p>${item.textarea @ context='text'}</p>
+				<div class="button-container">
+<button> <a href="${item.ni}.html">Courses</a></button>
+					</div>
+                </div>
+            </sly>
+       </sly>
+    </div>
+
+</body>
+</html>
